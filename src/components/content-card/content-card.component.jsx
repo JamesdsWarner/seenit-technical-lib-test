@@ -7,7 +7,7 @@ const ContentCard = (profile) => {
   const [isHeartLiked, setIsHeartLiked] = useState(false);
 
   const handleHeartClick = () => {
-    clickLike();
+    clickLike(null);
     setIsHeartLiked(!isHeartLiked);
   };
 

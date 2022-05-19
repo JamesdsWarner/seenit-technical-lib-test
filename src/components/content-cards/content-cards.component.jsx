@@ -1,28 +1,13 @@
 import ContentCard from "../content-card/content-card.component";
 import Spinner from "../spinner/spinner.component";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
+import { GlobalContext } from "../../context/GlobalState";
 import "./content-cards.styles.scss";
 
 const ContentCards = () => {
-  const [profiles, setProfiles] = useState([]);
-  const [likedProfiles, setLikedProfiles] = useState([]);
-
-  const handleClick = (profileToAdd) => {
-    const found = likedProfiles.find((profile) => profile.firstName === profileToAdd.firstName);
-
-    if (found) {
-      const profileRemovedArray = likedProfiles.filter((likedProfile) => {
-        return likedProfile.firstName !== profileToAdd.firstName;
-      });
-      setLikedProfiles([...profileRemovedArray]);
-    } else {
-      likedProfiles.indexOf(profileToAdd) === -1 &&
-        setLikedProfiles([...likedProfiles, { ...profileToAdd, liked: true }]);
-    }
-
-    console.log(likedProfiles);
-  };
+  const { allProfiles, setAllProfiles, likedProfiles, setLikedProfiles, profileArray, setProfileArray, isLiked } =
+    useContext(GlobalContext);
 
   useEffect(() => {
     const sendGetRequest = async () => {
@@ -32,8 +17,9 @@ const ContentCards = () => {
             Authorization: "BASIC james@seenit.io",
           },
         });
-        setProfiles([...resp.data.rows]);
-        console.log(profiles);
+        setAllProfiles([...resp.data.rows]);
+        setProfileArray([...resp.data.rows]);
+        console.log(allProfiles);
       } catch (error) {
         console.error(error);
       }
@@ -42,11 +28,26 @@ const ContentCards = () => {
     sendGetRequest();
   }, []);
 
+  const handleClick = (profileToAdd) => {
+    const found = likedProfiles.find((profile) => profile.firstName === profileToAdd.firstName);
+    console.log(allProfiles);
+    if (found) {
+      const profileRemovedArray = likedProfiles.filter((likedProfile) => {
+        return likedProfile.firstName !== profileToAdd.firstName;
+      });
+      setLikedProfiles([...profileRemovedArray]);
+    } else {
+      likedProfiles.indexOf(profileToAdd) === -1 && setLikedProfiles([...likedProfiles, profileToAdd]);
+    }
+
+    console.log(likedProfiles);
+  };
+
   return (
     <div className="content-cards-container">
-      {profiles.length > 1 ? (
+      {profileArray.length >= 1 ? (
         <div>
-          {profiles.map((profile) => {
+          {profileArray.map((profile) => {
             return (
               <div key={profile.duration}>
                 <ContentCard
@@ -55,12 +56,14 @@ const ContentCards = () => {
                   lastName={profile.lastName}
                   likes={profile.likes}
                   duration={profile.duration}
-                  clickLike={() => handleClick(profile, null)}
+                  clickLike={() => handleClick(profile)}
                 />
               </div>
             );
           })}
         </div>
+      ) : isLiked ? (
+        <span>You have no likes</span>
       ) : (
         <Spinner />
       )}
