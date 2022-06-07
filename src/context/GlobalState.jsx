@@ -13,6 +13,9 @@ export const GlobalProvider = ({ children }) => {
   const [sortDuration, setSortDuration] = useState(false);
   const [profileArray, setProfileArray] = useState([]);
   const [sortedArray, setSortedArray] = useState([]);
+  const [likeCounterArray, setLikeCounterArray] = useState([]);
+  const [allProfilesCopy, setAllProfilesCopy] = useState([]);
+  const [isFound, setIsFound] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -39,6 +42,12 @@ export const GlobalProvider = ({ children }) => {
         setSortedArray,
         profileArray,
         setProfileArray,
+        likeCounterArray,
+        setLikeCounterArray,
+        allProfilesCopy,
+        setAllProfilesCopy,
+        isFound,
+        setIsFound,
       }}
     >
       {children}

@@ -6,12 +6,12 @@ import { GlobalProvider } from "./context/GlobalState";
 
 function App() {
   return (
-    <div>
+    <>
       <GlobalProvider>
         <Banner />
         <ContentCards />
       </GlobalProvider>
-    </div>
+    </>
   );
 }
 

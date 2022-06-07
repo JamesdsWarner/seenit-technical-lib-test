@@ -17,25 +17,36 @@ const Banner = () => {
     likedProfiles,
     setIsLiked,
     isLiked,
+    likeCounterArray,
+    allProfilesCopy,
   } = useContext(GlobalContext);
 
   const handleAllClick = () => {
-    setProfileArray(allProfiles);
-    setIsLiked(false);
+    if (!isLiked) {
+      setProfileArray(allProfilesCopy);
+      setIsLiked(true);
+    } else {
+      setProfileArray(allProfilesCopy);
+      setIsLiked(false);
+    }
   };
 
   const handleLikedClick = () => {
-    setProfileArray(likedProfiles);
-    setIsLiked(!isLiked);
+    if (isLiked) {
+      return;
+    } else {
+      setProfileArray(likedProfiles);
+      setIsLiked(!isLiked);
+    }
   };
 
   const handleAlphaClick = () => {
     if (sortAlpha) {
       setIsSorted(false);
-      setProfileArray([...allProfiles]);
+      setProfileArray([...allProfilesCopy]);
     } else {
       setIsSorted(true);
-      setProfileArray(profileArray.sort((a, b) => a.firstName.localeCompare(b.firstName)));
+      setProfileArray([...profileArray].sort((a, b) => a.firstName.localeCompare(b.firstName)));
     }
     setSortAlpha(() => !sortAlpha);
   };
@@ -43,7 +54,7 @@ const Banner = () => {
   const handleLikedSortClick = () => {
     if (!sortHighestLiked && !sortLowestLiked) {
       setProfileArray(
-        profileArray.sort((a, b) => {
+        [...profileArray].sort((a, b) => {
           return b.likes - a.likes;
         })
       );
@@ -52,7 +63,7 @@ const Banner = () => {
       return;
     } else if (sortHighestLiked) {
       setProfileArray(
-        profileArray.sort((a, b) => {
+        [...profileArray].sort((a, b) => {
           return a.likes - b.likes;
         })
       );
@@ -60,7 +71,7 @@ const Banner = () => {
       setSortLowestLiked(true);
       return;
     } else if (sortLowestLiked) {
-      setProfileArray([...allProfiles]);
+      setProfileArray([...allProfilesCopy]);
       setSortLowestLiked(false);
       setIsSorted(false);
       return;
@@ -75,7 +86,7 @@ const Banner = () => {
         <span>Sort by:</span>
         <span onClick={handleAlphaClick}>Alphabet</span>
         <span onClick={handleLikedSortClick}>
-          {!sortLowestLiked && !sortHighestLiked ? "Liked" : sortHighestLiked ? "Highest" : sortLowestLiked && "Lowest"}
+          {!sortLowestLiked && !sortHighestLiked ? "Likes" : sortHighestLiked ? "Highest" : sortLowestLiked && "Lowest"}
         </span>
       </div>
     </div>
