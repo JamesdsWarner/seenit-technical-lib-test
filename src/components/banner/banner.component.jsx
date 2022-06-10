@@ -17,8 +17,10 @@ const Banner = () => {
     likedProfiles,
     setIsLiked,
     isLiked,
-    likeCounterArray,
     allProfilesCopy,
+    setIsReset,
+    setLikedProfiles,
+    setAllProfilesCopy,
   } = useContext(GlobalContext);
 
   const handleAllClick = () => {
@@ -78,6 +80,16 @@ const Banner = () => {
     }
   };
 
+  const handleResetClick = () => {
+    const newAllProfilesClone = allProfiles.map((profile) => {
+      return { ...profile };
+    });
+    setAllProfilesCopy(newAllProfilesClone);
+    setProfileArray(newAllProfilesClone.slice(0, 10));
+    setLikedProfiles([]);
+    setIsReset(true);
+  };
+
   return (
     <div className="banner-container">
       <div className="banner-text">
@@ -88,6 +100,7 @@ const Banner = () => {
         <span onClick={handleLikedSortClick}>
           {!sortLowestLiked && !sortHighestLiked ? "Likes" : sortHighestLiked ? "Highest" : sortLowestLiked && "Lowest"}
         </span>
+        <span onClick={handleResetClick}>Reset</span>
       </div>
     </div>
   );

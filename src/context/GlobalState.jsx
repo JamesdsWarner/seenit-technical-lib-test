@@ -5,17 +5,13 @@ export const GlobalProvider = ({ children }) => {
   const [allProfiles, setAllProfiles] = useState([]);
   const [likedProfiles, setLikedProfiles] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [filter, setFilter] = useState("all");
   const [isSorted, setIsSorted] = useState(false);
   const [sortAlpha, setSortAlpha] = useState(false);
   const [sortHighestLiked, setSortHighestLiked] = useState(false);
   const [sortLowestLiked, setSortLowestLiked] = useState(false);
-  const [sortDuration, setSortDuration] = useState(false);
   const [profileArray, setProfileArray] = useState([]);
-  const [sortedArray, setSortedArray] = useState([]);
-  const [likeCounterArray, setLikeCounterArray] = useState([]);
   const [allProfilesCopy, setAllProfilesCopy] = useState([]);
-  const [isFound, setIsFound] = useState(false);
+  const [isReset, setIsReset] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -26,8 +22,6 @@ export const GlobalProvider = ({ children }) => {
         setLikedProfiles,
         isLiked,
         setIsLiked,
-        filter,
-        setFilter,
         isSorted,
         setIsSorted,
         sortAlpha,
@@ -36,18 +30,12 @@ export const GlobalProvider = ({ children }) => {
         setSortHighestLiked,
         sortLowestLiked,
         setSortLowestLiked,
-        sortDuration,
-        setSortDuration,
-        sortedArray,
-        setSortedArray,
         profileArray,
         setProfileArray,
-        likeCounterArray,
-        setLikeCounterArray,
         allProfilesCopy,
         setAllProfilesCopy,
-        isFound,
-        setIsFound,
+        isReset,
+        setIsReset,
       }}
     >
       {children}

@@ -2,4 +2,14 @@
     margin-top: 30px;
     display: flex;
     justify-content: center;
+
+
+
+    .scroll-text {
+        text-align: center;
+    }
+}
+
+.infinite-scroll-component{
+    overflow: none;
 }

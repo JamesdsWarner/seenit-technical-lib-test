@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./content-card.styles.scss";
+import { GlobalContext } from "../../context/GlobalState";
 
 const ContentCard = (profile) => {
-  const { thumbnailUrl, firstName, lastName, likes, duration, clickLike } = profile;
+  const { thumbnailUrl, firstName, lastName, likes, duration, clickLike, isReset } = profile;
+  const { setIsReset } = useContext(GlobalContext);
 
   const [isHeartLiked, setIsHeartLiked] = useState(false);
+
+  useEffect(() => {
+    if (isReset) {
+      setIsHeartLiked(false);
+      setIsReset(false);
+    } else {
+      return;
+    }
+  }, [isReset]);
 
   const handleHeartClick = () => {
     clickLike(null);

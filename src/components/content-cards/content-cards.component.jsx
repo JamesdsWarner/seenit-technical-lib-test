@@ -1,6 +1,7 @@
 import ContentCard from "../content-card/content-card.component";
 import Spinner from "../spinner/spinner.component";
 import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
 import "./content-cards.styles.scss";
@@ -14,29 +15,31 @@ const ContentCards = () => {
     profileArray,
     setProfileArray,
     isLiked,
-    setLikeCounterArray,
-    likeCounterArray,
-    allProfilesCopy,
     setAllProfilesCopy,
-    isFound,
-    setIsFound,
+    isReset,
+    allProfilesCopy,
   } = useContext(GlobalContext);
 
-  useEffect(() => {
-    const sendGetRequest = async () => {
-      try {
-        const resp = await axios.get("https://tech-test-service-staging.seenit.studio/v1/uploads", {
-          headers: {
-            Authorization: "BASIC james@seenit.io",
-          },
-        });
-        setAllProfiles([...resp.data.rows]);
-        // console.log(allProfiles);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const [hasMore, setHasMore] = useState(true);
 
+  const sendGetRequest = async () => {
+    try {
+      const resp = await axios.get("https://tech-test-service-staging.seenit.studio/v1/uploads", {
+        headers: {
+          Authorization: "BASIC james@seenit.io",
+        },
+        params: {
+          page: 1,
+          perPage: 100,
+        },
+      });
+      setAllProfiles([...resp.data.rows]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
     sendGetRequest();
   }, []);
 
@@ -45,17 +48,23 @@ const ContentCards = () => {
       return { ...profile };
     });
     setAllProfilesCopy(clonedProfileArray);
-    setProfileArray(clonedProfileArray);
-    setLikeCounterArray(clonedProfileArray);
+    setProfileArray(clonedProfileArray.slice(0, 10));
   }, [allProfiles]);
+
+  const fetchMoreData = () => {
+    if (profileArray.length >= 100) {
+      setHasMore(false);
+    }
+    setTimeout(() => {
+      setProfileArray(allProfilesCopy.slice(0, profileArray.length + 10));
+    }, 1000);
+    console.log(profileArray);
+  };
 
   const handleClick = (profileToAdd) => {
     const found = likedProfiles.find((profile) => profile.firstName === profileToAdd.firstName);
-    const objIndex = profileArray.findIndex((profile) => profile.firstName === profileToAdd.firstName);
     console.log(allProfiles);
-
     if (found) {
-      setIsFound(true);
       profileArray.map((profile) =>
         profile.firstName === profileToAdd.firstName ? { ...profileToAdd, likes: profileToAdd.likes-- } : profile
       );
@@ -68,10 +77,8 @@ const ContentCards = () => {
       profileArray.map((profile) =>
         profile.firstName === profileToAdd.firstName ? { ...profileToAdd, likes: profileToAdd.likes++ } : profile
       );
-      setIsFound(false);
       likedProfiles.indexOf(profileToAdd) === -1 && setLikedProfiles([...likedProfiles, profileToAdd]);
     }
-
     console.log(likedProfiles);
   };
 
@@ -79,20 +86,36 @@ const ContentCards = () => {
     <div className="content-cards-container">
       {profileArray.length >= 1 ? (
         <div>
-          {profileArray.map((profile) => {
-            return (
-              <div key={profile.duration}>
-                <ContentCard
-                  thumbnailUrl={profile.thumbnailUrl}
-                  firstName={profile.firstName}
-                  lastName={profile.lastName}
-                  likes={profile.likes}
-                  duration={profile.duration}
-                  clickLike={() => handleClick(profile)}
-                />
-              </div>
-            );
-          })}
+          <InfiniteScroll
+            dataLength={isLiked ? likedProfiles.length : profileArray.length} //This is important field to render the next data
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<h4 className="scroll-text">Loading...</h4>}
+            style={{
+              overflow: "none",
+            }}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {profileArray.map((profile) => {
+              return (
+                <div key={profile.duration}>
+                  <ContentCard
+                    thumbnailUrl={profile.thumbnailUrl}
+                    firstName={profile.firstName}
+                    lastName={profile.lastName}
+                    likes={profile.likes}
+                    duration={profile.duration}
+                    clickLike={() => handleClick(profile)}
+                    isReset={isReset}
+                  />
+                </div>
+              );
+            })}
+          </InfiniteScroll>
         </div>
       ) : isLiked ? (
         <span>You have no likes</span>
