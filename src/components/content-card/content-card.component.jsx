@@ -39,7 +39,7 @@ const ContentCard = (profile) => {
         </p>
         <div>
           <div onClick={handleHeartClick} className={"heart-animation " + (isHeartLiked && "animate")}></div>
-          <p>{likes}</p>
+          <p className="likes">{likes}</p>
         </div>
       </div>
     </div>

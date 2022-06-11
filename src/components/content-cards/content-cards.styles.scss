@@ -1,15 +1,47 @@
 .content-cards-container{
     margin-top: 30px;
     display: flex;
-    justify-content: center;
+    position: relative;
 
+    @media screen and (max-width: 500px) {
+        justify-content: center;
+      }
 
-
+    @media screen and (min-width: 500px) {
+        margin: 30px 20px;
+    }
+    
     .scroll-text {
         text-align: center;
     }
 }
 
+
+
 .infinite-scroll-component{
     overflow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media screen and (min-width: 500px) {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+
+    }
+
+ 
+
+    .content-card{
+        flex: 1;
+        align-items: flex-start;
+
+    }
+
+    .content-card-inner{
+        width: 200px;
+       margin: auto;
+   }
+
 }

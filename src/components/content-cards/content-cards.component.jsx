@@ -22,24 +22,23 @@ const ContentCards = () => {
 
   const [hasMore, setHasMore] = useState(true);
 
-  const sendGetRequest = async () => {
-    try {
-      const resp = await axios.get("https://tech-test-service-staging.seenit.studio/v1/uploads", {
-        headers: {
-          Authorization: "BASIC james@seenit.io",
-        },
-        params: {
-          page: 1,
-          perPage: 100,
-        },
-      });
-      setAllProfiles([...resp.data.rows]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const sendGetRequest = async () => {
+      try {
+        const resp = await axios.get("https://tech-test-service-staging.seenit.studio/v1/uploads", {
+          headers: {
+            Authorization: "BASIC james@seenit.io",
+          },
+          params: {
+            page: 1,
+            perPage: 100,
+          },
+        });
+        setAllProfiles([...resp.data.rows]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     sendGetRequest();
   }, []);
 
@@ -85,24 +84,25 @@ const ContentCards = () => {
   return (
     <div className="content-cards-container">
       {profileArray.length >= 1 ? (
-        <div>
-          <InfiniteScroll
-            dataLength={isLiked ? likedProfiles.length : profileArray.length} //This is important field to render the next data
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<h4 className="scroll-text">Loading...</h4>}
-            style={{
-              overflow: "none",
-            }}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            {profileArray.map((profile) => {
-              return (
-                <div key={profile.duration}>
+        <InfiniteScroll
+          dataLength={isLiked ? likedProfiles.length : profileArray.length} //This is important field to render the next data
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<Spinner />}
+          style={{
+            overflow: "none",
+            // display: "flex",
+          }}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+          {profileArray.map((profile) => {
+            return (
+              <div className="content-card" key={profile.duration}>
+                <div className="content-card-inner">
                   <ContentCard
                     thumbnailUrl={profile.thumbnailUrl}
                     firstName={profile.firstName}
@@ -113,10 +113,10 @@ const ContentCards = () => {
                     isReset={isReset}
                   />
                 </div>
-              );
-            })}
-          </InfiniteScroll>
-        </div>
+              </div>
+            );
+          })}
+        </InfiniteScroll>
       ) : isLiked ? (
         <span>You have no likes</span>
       ) : (
