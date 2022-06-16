@@ -21,6 +21,7 @@ const ContentCard = (profile) => {
   }, [isReset]);
 
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);
@@ -28,6 +29,7 @@ const ContentCard = (profile) => {
 
   const closeModal = () => {
     setIsOpen(false);
+    setIsLoaded(false);
   };
 
   const handleHeartClick = () => {
@@ -60,13 +62,15 @@ const ContentCard = (profile) => {
         </div>
       </div>
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="Modal">
-        <img className="modal-image" src={imageUrl} />
-        <div className="modal-heart-circle" />
-        <div className="modal-heart">
-          <div
-            onClick={handleHeartClick}
-            className={"heart-animation modal-heart-animation " + (isHeartLiked && "animate")}
-          />
+        <img onLoad={() => setIsLoaded(true)} className={`${!isLoaded ? "hidden" : ""} modal-image`} src={imageUrl} />
+        <div className={!isLoaded ? "hidden" : ""}>
+          <div className="modal-heart-circle" />
+          <div className="modal-heart">
+            <div
+              onClick={handleHeartClick}
+              className={`heart-animation modal-heart-animation  ${isHeartLiked ? "animate" : ""}`}
+            />
+          </div>
         </div>
       </Modal>
     </>

@@ -86,58 +86,8 @@
 
 }
 
-.Modal{
-    width: 60%;
-    min-width: 391px;
-    max-width: 570px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
-  
-    // @media screen and (max-width: 950px) {
-      
-    // }
-  
-    .modal-image{
-      width: 100%;
-    }
-  
-    .modal-heart{
-      width: 15%;
-      border-radius: 50%;
-      background-color: rgba(229 , 229, 229, 0.2);
-          position: absolute;
-      left: 0; 
-      right: 0; 
-      margin-left: auto; 
-      margin-right: auto; 
-      bottom: 10%;
-    }
-  
-    .modal-heart-circle{
-    
-    }
-    .modal-heart::before {
-      content: '';
-      display: block;
-      margin-bottom: 100%;
-    }
-    
-  
-    .modal-heart-animation{
-      left: -10%; 
-      right: 0; 
-      margin-left: auto; 
-      margin-right: auto; 
-        width: 120%;
-      height: 120%;
-      top: -10%;
-  
-    }
+
   
   
-  }
+  
   
