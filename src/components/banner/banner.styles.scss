@@ -1,17 +1,102 @@
 .banner-container{
-    height: 50px;
+    height: 80px;
     width: 100%;
     background-color: #e5e5e5;
     position: relative;
+    font-family: 'Euclid-Semibold';
     
+
     .banner-text{
-        top: 30%;
+        top: 29%;
         position: absolute;
         margin-left: 30px;
         font-size: 15px;
+        cursor: pointer;
+        color: white;
 
-        span {
-            margin-right: 18px;
+        .sort-by {
+            color: black;
+            margin-right: 20px;
         }
+
+        .button {
+            border-radius: 5px;
+            margin-right: 18px;
+            text-align: center;
+            display: inline-block;
+            padding: 5px 10px;
+            height: 25px;
+            line-height: 25px; 
+            font-size: 16px;
+            -moz-transition: all 0.15s ease-in;
+            -webkit-transition: all 0.15s ease-in;
+            -o-transition: all 0.15s ease-in;
+            transition: all 0.15s ease-in;
+               }
+
+               .button:hover{
+                -moz-transition: all 0.15s ease-in;
+                -webkit-transition: all 0.15s ease-in;
+                -o-transition: all 0.15s ease-in;
+                transition: all 0.15s ease-in;
+               }
+
+
+
+            .green-button {
+                background-color: #60CF8B;
+
+            }
+
+            .green-button:hover{
+                background-color: #55B77B;
+                
+
+            }
+
+            .reset-button {
+                background-color: black;
+                
+            }
+
+            .reset-button:hover {
+                box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;            
+                transform: translate(0, -1px);
+     
+               }
+            }
+
+        .form{
+            top: 10%;
+            margin: 0;
+
+
+
+
+
+        }
+
+        .MuiFormControl-root{
+            margin-top: -0.6%;
+            margin-right: 20px;
+        }
+
+        .MuiFormLabel-root {
+            font-family: 'Euclid-Semibold';
+
+        }
+
+        .MuiInputBase-root{
+            font-family: 'Euclid-Semibold';
+
+        }
+
+
+
+
+        .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root{
+            font-family: 'Euclid-Semibold';
+
+        }
+
     }
-}

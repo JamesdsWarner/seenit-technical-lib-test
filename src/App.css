@@ -1,3 +1,13 @@
+@font-face {
+font-family: 'Euclid-Semibold';
+src: local('Euclid-Semibold'), url(./fonts/EuclidCircularA-Semibold.otf) format('opentype')
+}
+
+@font-face {
+  font-family: 'Euclid';
+  src: local('Euclid'), url(./fonts/EuclidCircularA-Regular.otf) format('opentype')
+  }
+
 .App {
   text-align: center;
 }

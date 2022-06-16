@@ -47,7 +47,7 @@ const ContentCards = () => {
       return { ...profile };
     });
     setAllProfilesCopy(clonedProfileArray);
-    setProfileArray(clonedProfileArray.slice(0, 10));
+    setProfileArray(clonedProfileArray.slice(0, 30));
   }, [allProfiles]);
 
   const fetchMoreData = () => {
@@ -81,6 +81,8 @@ const ContentCards = () => {
     console.log(likedProfiles);
   };
 
+  const n = 7;
+
   return (
     <div className="content-cards-container">
       {profileArray.length >= 1 ? (
@@ -91,10 +93,9 @@ const ContentCards = () => {
           loader={<Spinner />}
           style={{
             overflow: "none",
-            // display: "flex",
           }}
           endMessage={
-            <p style={{ textAlign: "center" }}>
+            <p className="end-message">
               <b>Yay! You have seen it all</b>
             </p>
           }
@@ -109,6 +110,7 @@ const ContentCards = () => {
                     lastName={profile.lastName}
                     likes={profile.likes}
                     duration={profile.duration}
+                    imageUrl={profile.imageUrl}
                     clickLike={() => handleClick(profile)}
                     isReset={isReset}
                   />
@@ -116,6 +118,11 @@ const ContentCards = () => {
               </div>
             );
           })}
+          {[...Array(n)].map((e, i) => (
+            <div key={i} className="content-card">
+              <div className="content-card-inner" />
+            </div>
+          ))}
         </InfiniteScroll>
       ) : isLiked ? (
         <span>You have no likes</span>
