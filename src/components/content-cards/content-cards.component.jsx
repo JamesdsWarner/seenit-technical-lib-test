@@ -25,9 +25,9 @@ const ContentCards = () => {
   useEffect(() => {
     const sendGetRequest = async () => {
       try {
-        const resp = await axios.get("https://tech-test-service-staging.seenit.studio/v1/uploads", {
+        const resp = await axios.get(`${process.env.REACT_APP_API_URL}`, {
           headers: {
-            Authorization: "BASIC james@seenit.io",
+            Authorization: `BASIC ${process.env.REACT_APP_TOKEN}`,
           },
           params: {
             page: 1,

@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import "./content-card.styles.scss";
 import { GlobalContext } from "../../context/GlobalState";
 import Modal from "react-modal";
+import Spinner from "../spinner/spinner.component";
 
 const ContentCard = (profile) => {
   Modal.setAppElement("#root");
@@ -62,7 +63,8 @@ const ContentCard = (profile) => {
         </div>
       </div>
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="Modal">
-        <img onLoad={() => setIsLoaded(true)} className={`${!isLoaded ? "hidden" : ""} modal-image`} src={imageUrl} />
+        {!isLoaded && <Spinner />}
+        <img onLoad={() => setIsLoaded(true)} className={`${!isLoaded ? "hidden" : "modal-image"} `} src={imageUrl} />
         <div className={!isLoaded ? "hidden" : ""}>
           <div className="modal-heart-circle" />
           <div className="modal-heart">
