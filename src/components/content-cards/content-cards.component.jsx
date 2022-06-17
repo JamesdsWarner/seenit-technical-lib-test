@@ -1,10 +1,9 @@
 import ContentCard from "../content-card/content-card.component";
 import Spinner from "../spinner/spinner.component";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useContext, useState } from "react";
 import { GlobalContext } from "../../context/GlobalState";
-import { ErrorBoundary } from "react-error-boundary";
 
 import "./content-cards.styles.scss";
 
@@ -38,7 +37,9 @@ const ContentCards = () => {
           },
         });
         setAllProfiles([...resp.data.rows]);
+        setIsError(false);
       } catch (error) {
+        setIsError(true);
         console.error(error);
       }
     };
@@ -62,11 +63,6 @@ const ContentCards = () => {
     }, 1000);
     console.log(profileArray);
   };
-
-  function ErrorFallback({ error, resetErrorBoundary }) {
-    error ? setIsError(true) : setIsError(false);
-    return;
-  }
 
   const handleClick = (profileToAdd) => {
     const found = likedProfiles.find((profile) => profile.firstName === profileToAdd.firstName);
@@ -92,59 +88,57 @@ const ContentCards = () => {
   const n = 7;
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <div className="content-cards-container">
-        {profileArray.length >= 1 ? (
-          <InfiniteScroll
-            dataLength={isLiked ? likedProfiles.length : profileArray.length} //This is important field to render the next data
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<Spinner />}
-            style={{
-              overflow: "none",
-            }}
-            endMessage={
-              <p className="end-message">
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            {profileArray.map((profile) => {
-              return (
-                <div className="content-card" key={profile.duration}>
-                  <div className="content-card-inner">
-                    <ContentCard
-                      thumbnailUrl={profile.thumbnailUrl}
-                      firstName={profile.firstName}
-                      lastName={profile.lastName}
-                      likes={profile.likes}
-                      duration={profile.duration}
-                      imageUrl={profile.imageUrl}
-                      clickLike={() => handleClick(profile)}
-                      isReset={isReset}
-                    />
-                  </div>
+    <div className="content-cards-container">
+      {profileArray.length >= 1 ? (
+        <InfiniteScroll
+          dataLength={isLiked ? likedProfiles.length : profileArray.length} //This is important field to render the next data
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<Spinner />}
+          style={{
+            overflow: "none",
+          }}
+          endMessage={
+            <p className="end-message">
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+          {profileArray.map((profile) => {
+            return (
+              <div className="content-card" key={profile.duration}>
+                <div className="content-card-inner">
+                  <ContentCard
+                    thumbnailUrl={profile.thumbnailUrl}
+                    firstName={profile.firstName}
+                    lastName={profile.lastName}
+                    likes={profile.likes}
+                    duration={profile.duration}
+                    imageUrl={profile.imageUrl}
+                    clickLike={() => handleClick(profile)}
+                    isReset={isReset}
+                  />
                 </div>
-              );
-            })}
-            {[...Array(n)].map((e, i) => (
-              <div key={i} className="content-card">
-                <div className="content-card-inner" />
               </div>
-            ))}
-          </InfiniteScroll>
-        ) : isLiked ? (
-          <span>You have no likes</span>
-        ) : isError ? (
-          <Spinner />
-        ) : (
-          <div role="alert">
-            <p>Something went wrong</p>
-            <p>Uh Oh. Check your permissions and try again</p>
-          </div>
-        )}
-      </div>
-    </ErrorBoundary>
+            );
+          })}
+          {[...Array(n)].map((e, i) => (
+            <div key={i} className="content-card">
+              <div className="content-card-inner" />
+            </div>
+          ))}
+        </InfiniteScroll>
+      ) : isLiked ? (
+        <span>You have no likes</span>
+      ) : !isError ? (
+        <Spinner />
+      ) : (
+        <div role="alert">
+          <p>Something went wrong</p>
+          <p>Uh Oh. Check your permissions and try again</p>
+        </div>
+      )}
+    </div>
   );
 };
 
