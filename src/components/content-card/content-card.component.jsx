@@ -11,6 +11,8 @@ const ContentCard = (profile) => {
   const { setIsReset } = useContext(GlobalContext);
 
   const [isHeartLiked, setIsHeartLiked] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (isReset) {
@@ -20,9 +22,6 @@ const ContentCard = (profile) => {
       return;
     }
   }, [isReset]);
-
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const openModal = () => {
     setIsOpen(true);

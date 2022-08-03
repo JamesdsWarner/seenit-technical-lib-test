@@ -68,7 +68,7 @@ const ContentCards = () => {
     const found = likedProfiles.find((profile) => profile.firstName === profileToAdd.firstName);
     console.log(allProfiles);
     if (found) {
-      profileArray.map((profile) =>
+      allProfilesCopy.map((profile) =>
         profile.firstName === profileToAdd.firstName ? { ...profileToAdd, likes: profileToAdd.likes-- } : profile
       );
       setLikedProfiles(
@@ -77,7 +77,7 @@ const ContentCards = () => {
         })
       );
     } else {
-      profileArray.map((profile) =>
+      allProfilesCopy.map((profile) =>
         profile.firstName === profileToAdd.firstName ? { ...profileToAdd, likes: profileToAdd.likes++ } : profile
       );
       likedProfiles.indexOf(profileToAdd) === -1 && setLikedProfiles([...likedProfiles, profileToAdd]);
